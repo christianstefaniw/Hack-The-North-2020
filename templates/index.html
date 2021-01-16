@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://kit.fontawesome.com/a76f8913d2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>HTN Project</title>
+</head>
+    <body>
+        {% for post in posts %}
+            {%  if forloop.first %}<div class="row row-cols-4">{% endif %}
+            <div class="card post-card">
+              <img class="card-img-top" src="{{ post.image.url }}" alt="post">
+              <div class="card-body">
+                <h5 class="card-title">{{ post.user.name }}</h5>
+                <p class="card-text">{{ post.caption }}</p>
+                  <div class="like">
+                      <form method="post" action="update_like/{{ post.id }}">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-danger like-btn">
+                              <div class="row justify-content-md-center">
+                                  <div class="col-md-4">
+                                      <i class="far fa-heart"></i>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <p>{{ post.likes }}</p>
+                                  </div>
+                              </div>
+                          </button>
+                      </form>
+                  </div>
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:3 %}</div><div class="row">{% endif %}
+            {% if forloop.last %}</div>{% endif %}
+        {% endfor %}
+    </body>
+</html>
