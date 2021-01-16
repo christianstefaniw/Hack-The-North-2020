@@ -117,6 +117,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+hack_the_north_2020/.env
 .env
 .venv
 env/

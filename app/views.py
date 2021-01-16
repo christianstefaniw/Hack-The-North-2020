@@ -12,6 +12,7 @@ def index(request, user_id):
         if form.is_valid():
             record = form.save()
             record.user = User.objects.get(id=user_id)
+            record.save()
         return redirect(f'/home/{user_id}')
     else:
         posts = Post.objects.all()
