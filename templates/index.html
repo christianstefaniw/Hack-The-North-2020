@@ -10,23 +10,28 @@
     <title>HTN Project</title>
 </head>
     <body>
+
         {% for post in posts %}
-            {%  if forloop.first %}<div class="row row-cols-4">{% endif %}
+            {%  if forloop.first %}<div class="row row-cols-md-4 posts-row">{% endif %}
             <div class="card post-card">
               <img class="card-img-top" src="{{ post.image.url }}" alt="post">
               <div class="card-body">
                 <h5 class="card-title">{{ post.user.name }}</h5>
                 <p class="card-text">{{ post.caption }}</p>
                   <div class="like">
-                      <form method="post" action="update_like/{{ post.id }}">
+                      <form method="post" action="update_like/{{ post.id }}/{{ user.id }}">
                           {% csrf_token %}
                           <button type="submit" class="btn btn-danger like-btn">
                               <div class="row justify-content-md-center">
                                   <div class="col-md-4">
-                                      <i class="far fa-heart"></i>
+                                      {% if user in post.likes.all %}
+                                          <i class="fas fa-heart"></i>
+                                      {% else %}
+                                           <i class="far fa-heart"></i>
+                                      {% endif %}
                                   </div>
                                   <div class="col-md-4">
-                                      <p>{{ post.likes }}</p>
+                                      <p>{{ post.likes.count }}</p>
                                   </div>
                               </div>
                           </button>
@@ -34,8 +39,20 @@
                   </div>
                 </div>
             </div>
-            {% if forloop.counter|divisibleby:3 %}</div><div class="row">{% endif %}
+            {% if forloop.counter|divisibleby:3 %}</div><div class="row row-cols-md-4 posts-row">{% endif %}
             {% if forloop.last %}</div>{% endif %}
         {% endfor %}
+        <div>
+            <form method="post" enctype='multipart/form-data'>
+                {% csrf_token %}
+                <div id="post-upload">
+                    {{ create_post }}
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Upload</button>
+            </form>
+        </div>
     </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </html>
